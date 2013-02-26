@@ -1,0 +1,22 @@
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span2">
+            <!--Sidebar content-->
+            <form ng-submit="searchPhotos()">
+                <p>Search photos by <a href="http://www.flickr.com"><img src="/app/img/flickr-logo-2012.png"/></a></p>
+                <input ng-model="term" placeholder="type something">
+                <input class="btn-primary" type="submit" value="Search">
+            </form>
+        </div>
+        <div class="span5">
+            <!--Body content-->
+            <ul class="photos">
+                <li ng-repeat="photo in photos" class="thumbnail">
+                    <a href="{{mapPhoto(photo).src}}">{{photo.title}}</a>
+                    <a class="thumb" href="{{mapPhoto(photo).src}}"><img ng-src="{{mapPhoto(photo).thumb_src}}"></a>
+                    <p>{{photo.id}}</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
