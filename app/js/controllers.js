@@ -5,6 +5,8 @@
 
 function PhotoListController($scope, $location, Photo) {
     $scope.term = "green";
+    $scope.itemsPerPage = 5;
+    $scope.currentPage = 0;
 
     $scope.mapPhoto = function(photo) {
         return {
@@ -28,6 +30,8 @@ function PhotoListController($scope, $location, Photo) {
             function success(data){
                 if (data.photos && (data.photos.photo.length)) {
                     $scope.photos = data.photos.photo;
+                    $scope.currentPage = 0;
+                    $scope.groupToPages();
                 }
                 else {
                     // should redirect to empty pages
@@ -39,6 +43,45 @@ function PhotoListController($scope, $location, Photo) {
             }
         );
     }
+    // pagination
+    $scope.groupToPages = function () {
+        $scope.pagedItems = [];
+        for (var i = 0; i < $scope.photos.length; i++) {
+            if (i % $scope.itemsPerPage === 0) {
+                $scope.pagedItems[Math.floor(i / $scope.itemsPerPage)] = [ $scope.photos[i] ];
+            } else {
+                $scope.pagedItems[Math.floor(i / $scope.itemsPerPage)].push($scope.photos[i]);
+            }
+        }
+    };
+
+    $scope.range = function (start, end) {
+        var ret = [];
+        if (!end) {
+            end = start;
+            start = 0;
+        }
+        for (var i = start; i < end; i++) {
+            ret.push(i);
+        }
+        return ret;
+    };
+
+    $scope.prevPage = function () {
+        if ($scope.currentPage > 0) {
+            $scope.currentPage--;
+        }
+    };
+
+    $scope.nextPage = function () {
+        if ($scope.currentPage < $scope.pagedItems.length - 1) {
+            $scope.currentPage++;
+        }
+    };
+
+    $scope.setPage = function () {
+        $scope.currentPage = this.n;
+    };
 
     $scope.searchPhotos();
 }

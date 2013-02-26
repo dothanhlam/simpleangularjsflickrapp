@@ -11,12 +11,27 @@
         <div class="span5">
             <!--Body content-->
             <ul class="photos">
-                <li ng-repeat="photo in photos" class="thumbnail">
+                <li ng-repeat="photo in pagedItems[currentPage]" class="thumbnail">
                     <a href="{{mapPhoto(photo).src}}">{{photo.title}}</a>
                     <a class="thumb" href="{{mapPhoto(photo).src}}"><img ng-src="{{mapPhoto(photo).thumb_src}}"></a>
                     <p>{{photo.id}}</p>
                 </li>
             </ul>
+            <div class="pagination">
+                <ul>
+                    <li ng-class="{disabled: currentPage == 0}">
+                        <a href ng-click="prevPage()">« Prev</a>
+                    </li>
+                    <li ng-repeat="n in range(pagedItems.length)"
+                        ng-class="{active: n == currentPage}"
+                        ng-click="setPage()">
+                        <a href ng-bind="n + 1">1</a>
+                    </li>
+                    <li ng-class="{disabled: currentPage == pagedItems.length - 1}">
+                        <a href ng-click="nextPage()">Next »</a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>
